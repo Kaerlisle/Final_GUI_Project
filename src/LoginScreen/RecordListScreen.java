@@ -37,6 +37,12 @@ public class RecordListScreen {
         JComboBox combox = new JComboBox(sortingList);
         sorting.add(combox);
 
+        JRadioButton asc = new JRadioButton("Ascending");
+        JRadioButton desc = new JRadioButton("Descending");
+
+        sorting.add(asc);
+        sorting.add(desc);
+
         JPanel buttons = new JPanel();
         JButton addb = new JButton("Add a Record");
         JButton rem = new JButton("Remove a Record");
@@ -57,9 +63,6 @@ public class RecordListScreen {
         JTable
         JTextArea
         JRadioButton
-
-        JRadioButton asc = new JRadioButton("Ascending");
-        JRadioButton desc = new JRadioButton("Descending");
         */
     }
 
