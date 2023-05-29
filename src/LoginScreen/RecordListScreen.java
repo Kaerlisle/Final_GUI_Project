@@ -11,7 +11,7 @@ public class RecordListScreen {
     }
 
     private void initializeUI() {
-        JFrame frame = new JFrame("Record List Screen");
+        JFrame frame = new JFrame("List of Records");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 700);
         frame.setLocationRelativeTo(null); // Center the window on the screen
