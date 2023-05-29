@@ -20,42 +20,48 @@ public class RecordListScreen {
         frame.setVisible(true);
         frame.setLayout(new GridLayout(4, 4));
 
-        JPanel lists = new JPanel();
+        JPanel titleOfRecords = new JPanel();
         JLabel name = new JLabel("Name");
         JLabel bday = new JLabel("Birthday");
         JLabel age = new JLabel("Age");
 
-        lists.add(name);
-        lists.add(bday);
-        lists.add(age);
+        titleOfRecords.add(name);
+        titleOfRecords.add(bday);
+        titleOfRecords.add(age);
 
-        JPanel sorting = new JPanel();
-        JLabel sorlabel = new JLabel("Sort By:");
-        sorting.add(sorlabel);
+
+        JPanel listsOfRecords = new JPanel(new BorderLayout());
+        JTable records = new JTable();
+        listsOfRecords.add(records);
+
+
+        JPanel sortingLabels = new JPanel();
+        JLabel sotLabelText = new JLabel("Sort By:");
+        sortingLabels.add(sotLabelText);
 
         String[] sortingList = { "Name", "Birthday", "Age"};
         JComboBox combox = new JComboBox(sortingList);
-        sorting.add(combox);
+        sortingLabels.add(combox);
 
-        JRadioButton asc = new JRadioButton("Ascending");
-        JRadioButton desc = new JRadioButton("Descending");
+        JRadioButton ascButton = new JRadioButton("Ascending");
+        JRadioButton descButton = new JRadioButton("Descending");
 
-        sorting.add(asc);
-        sorting.add(desc);
+        sortingLabels.add(ascButton);
+        sortingLabels.add(descButton);
 
         JPanel buttons = new JPanel();
-        JButton addb = new JButton("Add a Record");
-        JButton rem = new JButton("Remove a Record");
-        JButton expo = new JButton("Export to CSV File");
+        JButton addB = new JButton("Add a Record");
+        JButton remB = new JButton("Remove a Record");
+        JButton expoB = new JButton("Export to CSV File");
 
-        buttons.add(addb);
-        buttons.add(rem);
-        buttons.add(expo);
+        buttons.add(addB);
+        buttons.add(remB);
+        buttons.add(expoB);
 
-        frame.add(lists);
-        frame.add(sorting);
+        frame.add(titleOfRecords);
+        //frame.add();
+        frame.add(sortingLabels);
         frame.add(buttons);
-
 
         /*
         JComboBox
