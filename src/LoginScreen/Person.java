@@ -2,6 +2,7 @@ package LoginScreen;
 
 import java.util.Date;
 
+// do not make kalikot already as is (i think)
 public class Person {
     private String name;
     private Date birthDay;
