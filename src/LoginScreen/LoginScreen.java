@@ -20,8 +20,7 @@ public class LoginScreen extends JFrame {
     private void clearFields() {
         usernameField.setText("");
         passwordField.setText("");
-
-        //comment
+        //test
     }
 
     private void loadCredentialsFromFile() {
