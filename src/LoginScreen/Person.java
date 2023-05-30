@@ -2,7 +2,7 @@ package LoginScreen;
 
 import java.util.Date;
 
-// do not make kalikot already as is (i think)
+// I have no idea what this object is used for baka sainyo pa later :DD
 public class Person {
     private String name;
     private Date birthDay;
@@ -29,7 +29,7 @@ public class Person {
         return age;
     }
 
-    public void computeAge(Date birthDay) {
+    public void computeAge(Date birthDay) { //will probably change later :DDD
         Date currentDate = new Date();
         long millisecondsPerYear = 365L * 24 * 60 * 60 * 1000;
         long ageInMillis = currentDate.getTime() - birthDay.getTime();

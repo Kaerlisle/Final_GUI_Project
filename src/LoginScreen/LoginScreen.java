@@ -24,6 +24,7 @@ public class LoginScreen extends JFrame {
 
     private void loadCredentialsFromFile() {
         String fileName = "C:\\Users\\gohan\\Desktop\\FinalProject\\loginCredentials.txt";
+
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             int lineCount = 0;
@@ -49,27 +50,27 @@ public class LoginScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
-        // Username Label
+
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setBounds(50, 30, 100, 25);
         add(usernameLabel);
 
-        // Username Text Field
+
         usernameField = new JTextField();
         usernameField.setBounds(140, 30, 200, 25);
         add(usernameField);
 
-        // Password Label
+
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setBounds(50, 70, 100, 25);
         add(passwordLabel);
 
-        // Password Field
+
         passwordField = new JPasswordField();
         passwordField.setBounds(140, 70, 200, 25);
         add(passwordField);
 
-        // Login Button
+
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(185, 110, 100, 25);
         add(loginButton);
@@ -107,7 +108,7 @@ public class LoginScreen extends JFrame {
     private void openRecordListScreen(String username) {
         SwingUtilities.invokeLater(() -> {
             new RecordListScreen(username);
-            dispose(); // Close the login screen
+            dispose();
         });
     }
 

@@ -3,6 +3,8 @@ package LoginScreen;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RecordListScreen {
     private String username;
@@ -17,10 +19,8 @@ public class RecordListScreen {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null); // Center the window on the screen
-        frame.setVisible(true);
-        frame.setLayout(new GridLayout(4, 4));
 
-        //list of records of user's name, birthday, and age
+        // List of records of user's name, birthday, and age
         JPanel titleOfRecords = new JPanel(new GridLayout(1, 3));
         JLabel name = new JLabel("Name");
         JLabel bday = new JLabel("Birthday");
@@ -30,28 +30,36 @@ public class RecordListScreen {
         titleOfRecords.add(bday);
         titleOfRecords.add(age);
 
-        //table for the records of user
+        // Table for the records of the user
         JPanel listsOfRecords = new JPanel(new BorderLayout());
         JTable records = new JTable();
-        listsOfRecords.add(records);
+        DefaultTableModel model = new DefaultTableModel();
+        records.setModel(model);
+        listsOfRecords.add(new JScrollPane(records));
 
-        //sorting part where you sort the list in a given order
-        JPanel sortingLabels = new JPanel();
-        JLabel sotLabelText = new JLabel("Sort By:");
-        sortingLabels.add(sotLabelText);
+        // Sorting part where you sort the list in a given order
+        JPanel sortingLabels = new JPanel(new GridLayout(2, 2));
+        JLabel sortLabelText = new JLabel("Sort By:");
+        sortingLabels.add(sortLabelText);
 
-        String[] sortingList = { "Name", "Birthday", "Age"};
-        JComboBox combox = new JComboBox(sortingList);
-        sortingLabels.add(combox);
+        String[] sortingList = {"Name", "Birthday", "Age"};
+        JComboBox<String> comboBox = new JComboBox<>(sortingList);
+        sortingLabels.add(comboBox);
 
         JRadioButton ascButton = new JRadioButton("Ascending");
         JRadioButton descButton = new JRadioButton("Descending");
 
+        ButtonGroup buttonGroup = new ButtonGroup();
+        buttonGroup.add(ascButton);
+        buttonGroup.add(descButton);
+
+        sortingLabels.add(new JLabel());
         sortingLabels.add(ascButton);
+        sortingLabels.add(new JLabel());
         sortingLabels.add(descButton);
 
-        //buttons on where another action executes
-        JPanel buttons = new JPanel();
+        // Buttons where another action executes
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton addB = new JButton("Add a Record");
         JButton remB = new JButton("Remove a Record");
         JButton expoB = new JButton("Export to CSV File");
@@ -60,39 +68,49 @@ public class RecordListScreen {
         buttons.add(remB);
         buttons.add(expoB);
 
-        //
-        frame.add(titleOfRecords);
-        //frame.add();
-        frame.add(sortingLabels);
-        frame.add(buttons);
+        frame.setLayout(new BorderLayout());
+        frame.add(titleOfRecords, BorderLayout.NORTH);
+        frame.add(listsOfRecords, BorderLayout.CENTER);
+        frame.add(sortingLabels, BorderLayout.WEST);
+        frame.add(buttons, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+
+        addB.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addRecords();
+            }
+        });
     }
 
-    /*
     private void addRecords() {
-        //
-        JPanel name = new JPanel();
-        JLabel label11 = new JLabel("Name:");
-        name.add(label11);
-        JTextField recName = new JTextField(10);
-        name.add(recName);
+        JPanel panel = new JPanel(new GridLayout(3, 2));
+        JLabel nameLabel = new JLabel("Name:");
+        JTextField nameField = new JTextField(20);
+        JLabel bdayLabel = new JLabel("Birthday:");
+        JTextField bdayField = new JTextField(10);
+        JLabel ageLabel = new JLabel("Age:");
+        JTextField ageField = new JTextField(3);
 
-        //
-        String[] sortingList = { "January"};
-        JComboBox comboxMonth = new JComboBox(sortingList);
-        .add(comboxMonth);
+        panel.add(nameLabel);
+        panel.add(nameField);
+        panel.add(bdayLabel);
+        panel.add(bdayField);
+        panel.add(ageLabel);
+        panel.add(ageField);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Add Record",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            String name = nameField.getText();
+            String birthday = bdayField.getText();
+            String age = ageField.getText();
+
+            // Add logic to save the record or update the table
+        }
     }
-    */
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new RecordListScreen(""));
-
-        /*
-        AbstractButton ascButton;
-        ascButton.addActionListener(e -> {
-            String getSortBy = sortingList.getText();
-
-        });
-        */
     }
 }
-
