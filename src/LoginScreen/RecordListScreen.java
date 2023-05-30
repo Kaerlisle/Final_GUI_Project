@@ -38,12 +38,13 @@ public class RecordListScreen {
         listsOfRecords.add(new JScrollPane(records));
 
         // Sorting part where you sort the list in a given order
-        JPanel sortingLabels = new JPanel(new GridLayout(2, 2));
+        JPanel sortingLabels = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel sortLabelText = new JLabel("Sort By:");
         sortingLabels.add(sortLabelText);
 
         String[] sortingList = {"Name", "Birthday", "Age"};
         JComboBox<String> comboBox = new JComboBox<>(sortingList);
+        comboBox.setPreferredSize(new Dimension(100, comboBox.getPreferredSize().height)); // Set preferred size
         sortingLabels.add(comboBox);
 
         JRadioButton ascButton = new JRadioButton("Ascending");
@@ -53,10 +54,9 @@ public class RecordListScreen {
         buttonGroup.add(ascButton);
         buttonGroup.add(descButton);
 
-        sortingLabels.add(new JLabel());
         sortingLabels.add(ascButton);
-        sortingLabels.add(new JLabel());
         sortingLabels.add(descButton);
+
 
         // Buttons where another action executes
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
