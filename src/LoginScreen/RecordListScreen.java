@@ -3,6 +3,8 @@ package LoginScreen;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -182,28 +184,53 @@ public class RecordListScreen {
 
 
     private void removeRecord() {
-        String name = JOptionPane.showInputDialog(null, "Enter the name of the record to remove:",
-                "Remove Record", JOptionPane.PLAIN_MESSAGE);
-        if (name != null && !name.isEmpty()) {
-            boolean removed = false;
-            for (Person person : records) {
-                if (person.getName().equals(name)) {
-                    records.remove(person);
-                    removed = true;
-                    break;
+        JFrame removeRecord = new JFrame("Remove a Record");
+        JPanel removePanel = new JPanel(new GridLayout(5, 2));
+
+        JLabel namePanel = new JLabel("Name:");
+        JTextField nameField = new JTextField();
+        JButton removeGoBackButton = new JButton("Remove and Go Back");
+        JButton removeAnotherButton = new JButton("Remove Another");
+        JButton backButton = new JButton("Back");
+
+        removePanel.add(namePanel);
+        removePanel.add(nameField);
+        removePanel.add(removeGoBackButton);
+        removePanel.add(removeAnotherButton);
+        removePanel.add(backButton);
+
+        removeGoBackButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                String name = namePanel.getText().trim();
+                if (name.isEmpty()) {
+                    int confirm = JOptionPane.showConfirmDialog(removePanel, "Remove this record?", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        boolean removed = removeRecord(name);
+                        if (removed) {
+                            JOptionPane.showMessageDialog(removePanel, "The record is removed.");
+                        } else {
+                            JOptionPane.showMessageDialog(removePanel, "No such record is found.");
+                        }
+                        updateTable();
+                        removeRecord.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(removePanel, "Input a name.", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
-            if (removed) {
-                updateTable();
-            } else {
-                JOptionPane.showMessageDialog(null, "Record not found.", "No Record Found", JOptionPane.WARNING_MESSAGE);
+        });
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                removePanel.dispose();
             }
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "Please enter a name to remove a record.",
-                    "No Name Entered", JOptionPane.WARNING_MESSAGE);
-        }
+        });
+
+        removePanel.add(removePanel);
+        removePanel.setSize(300,200);
+        removePanel.setLocation(this);
+        removePanel.setVisible(true);
     }
+
 
     private void exportToCSV() {
         StringBuilder csvData = new StringBuilder();
