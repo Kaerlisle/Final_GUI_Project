@@ -87,18 +87,21 @@ public class RecordListScreen {
         JTextField nameField = new JTextField(20);
         JLabel bdayLabel = new JLabel("Birthday:");
 
-        String[] sortingOptions = {"January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"};
-        JComboBox<String> sortMonths = new JComboBox<>(sortingOptions);
+        // ComboBox for Month
+        String[] months = {
+                "January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"
+        };
+        JComboBox<String> monthComboBox = new JComboBox<>(months);
 
-        // ComboBox (day)
+        // ComboBox for Day
         String[] days = new String[31];
         for (int i = 1; i <= 31; i++) {
             days[i - 1] = String.valueOf(i);
         }
         JComboBox<String> dayComboBox = new JComboBox<>(days);
 
-        // ComboBox (year)
+        // ComboBox for Year
         String[] years = new String[100];
         int currentYear = LocalDate.now().getYear();
         for (int i = 0; i < 100; i++) {
@@ -109,7 +112,7 @@ public class RecordListScreen {
         panel.add(nameLabel);
         panel.add(nameField);
         panel.add(bdayLabel);
-        panel.add((PopupMenu) monthComboBox);
+        panel.add(monthComboBox);
         panel.add(new JLabel("")); // Placeholder for alignment
         panel.add(dayComboBox);
         panel.add(new JLabel("")); // Placeholder for alignment
