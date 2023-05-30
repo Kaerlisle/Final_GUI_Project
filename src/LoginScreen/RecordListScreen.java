@@ -89,14 +89,19 @@ public class RecordListScreen {
                 "July", "August", "September", "October", "November", "December"};
         JComboBox<String> sortMonths = new JComboBox<>(sortingOptions);
 
-        JLabel ageLabel = new JLabel("Age:");
-        JTextField ageField = new JTextField(3);
+        // ComboBox (day)
+        String[] days = new String[31];
+        for (int i = 1; i <= 31; i++) {
+            days[i - 1] = String.valueOf(i);
+        }
 
-        String[] months ={
-                "January", "February", "March", "April", "May", "June", "July",
-                "August", "September", "October", "November", "December"
-        };
-        JComboBox<String> monthComboBox = new JComboBox<>(months);
+        JComboBox<String> dayComboBox = new JComboBox<>(days);
+
+        // ComboBox (year)
+        String
+
+        JLabel ageLabel = new JLabel("Age:");
+
 
         panel.add(nameLabel);
         panel.add(nameField);
