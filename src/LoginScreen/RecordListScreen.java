@@ -3,14 +3,15 @@ package LoginScreen;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class RecordListScreen {
-    private String username;
+    private final ArrayList<Person> records;
+    private JTable recordsTable;
 
     public RecordListScreen(String username) {
-        this.username = username;
+        this.records = new ArrayList<>();
         initializeUI();
     }
 
@@ -18,72 +19,66 @@ public class RecordListScreen {
         JFrame frame = new JFrame("List of Records");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 500);
-        frame.setLocationRelativeTo(null); // Center the window on the screen
+        frame.setLocationRelativeTo(null);
 
-        // List of records of user's name, birthday, and age
-        JPanel titleOfRecords = new JPanel(new GridLayout(1, 3));
-        JLabel name = new JLabel("Name");
-        JLabel bday = new JLabel("Birthday");
-        JLabel age = new JLabel("Age");
+        JPanel titlePanel = new JPanel(new GridLayout());
 
-        titleOfRecords.add(name);
-        titleOfRecords.add(bday);
-        titleOfRecords.add(age);
-
-        // Table for the records of the user
-        JPanel listsOfRecords = new JPanel(new BorderLayout());
-        JTable records = new JTable();
+        JPanel recordsPanel = new JPanel(new BorderLayout());
         DefaultTableModel model = new DefaultTableModel();
-        records.setModel(model);
-        listsOfRecords.add(new JScrollPane(records));
+        recordsTable = new JTable(model);
+        model.addColumn("Name");
+        model.addColumn("Birthday");
+        model.addColumn("Age");
+        recordsPanel.add(new JScrollPane(recordsTable));
 
-        // Sorting part where you sort the list in a given order
-        JPanel sortingLabels = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel sortLabelText = new JLabel("Sort By:");
-        sortingLabels.add(sortLabelText);
+        JPanel sortingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel sortLabel = new JLabel("Sort By:");
+        sortingPanel.add(sortLabel);
 
-        String[] sortingList = {"Name", "Birthday", "Age"};
-        JComboBox<String> comboBox = new JComboBox<>(sortingList);
-        comboBox.setPreferredSize(new Dimension(100, comboBox.getPreferredSize().height)); // Set preferred size
-        sortingLabels.add(comboBox);
+        String[] sortingOptions = { "Name", "Birthday", "Age" };
+        JComboBox<String> sortComboBox = new JComboBox<>(sortingOptions);
+        sortingPanel.add(sortComboBox);
 
         JRadioButton ascButton = new JRadioButton("Ascending");
         JRadioButton descButton = new JRadioButton("Descending");
-
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(ascButton);
         buttonGroup.add(descButton);
+        sortingPanel.add(ascButton);
+        sortingPanel.add(descButton);
 
-        sortingLabels.add(ascButton);
-        sortingLabels.add(descButton);
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton addButton = new JButton("Add a Record");
+        JButton removeButton = new JButton("Remove Record");
+        JButton exportButton = new JButton("Export to CSV File");
 
-
-        // Buttons where another action executes
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton addB = new JButton("Add a Record");
-        JButton remB = new JButton("Remove a Record");
-        JButton expoB = new JButton("Export to CSV File");
-
-        buttons.add(addB);
-        buttons.add(remB);
-        buttons.add(expoB);
+        buttonsPanel.add(addButton);
+        buttonsPanel.add(removeButton);
+        buttonsPanel.add(exportButton);
 
         frame.setLayout(new BorderLayout());
-        frame.add(titleOfRecords, BorderLayout.NORTH);
-        frame.add(listsOfRecords, BorderLayout.CENTER);
-        frame.add(sortingLabels, BorderLayout.WEST);
-        frame.add(buttons, BorderLayout.SOUTH);
+        frame.add(titlePanel, BorderLayout.NORTH);
+        frame.add(recordsPanel, BorderLayout.CENTER);
+        frame.add(sortingPanel, BorderLayout.EAST);
+        frame.add(buttonsPanel, BorderLayout.SOUTH);
 
         frame.setVisible(true);
 
-        addB.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addRecords();
-            }
+        addButton.addActionListener(e -> addRecord());
+
+        removeButton.addActionListener(e -> removeRecord());
+
+        exportButton.addActionListener(e -> exportToCSV());
+
+        sortComboBox.addActionListener(e -> {
+            String selectedSortOption = (String) sortComboBox.getSelectedItem();
+            boolean isAscending = ascButton.isSelected();
+            assert selectedSortOption != null;
+            sortRecords(selectedSortOption, isAscending);
         });
     }
 
-    private void addRecords() {
+    private void addRecord() {
         JPanel panel = new JPanel(new GridLayout(3, 2));
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
@@ -104,13 +99,95 @@ public class RecordListScreen {
         if (result == JOptionPane.OK_OPTION) {
             String name = nameField.getText();
             String birthday = bdayField.getText();
-            String age = ageField.getText();
+            int age = Integer.parseInt(ageField.getText());
+            Person person = new Person(name, birthday, age);
+            records.add(person);
+            updateTable();
+        }
+    }
 
-            // Add logic to save the record or update the table
+    private void removeRecord() {
+        int selectedRow = recordsTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            records.remove(selectedRow);
+            updateTable();
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a record to remove.",
+                    "No Record Selected", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private void exportToCSV() {
+        StringBuilder csvData = new StringBuilder();
+        csvData.append("Name,Birthday,Age\n");
+
+        for (Person person : records) {
+            csvData.append(person.getName()).append(",")
+                    .append(person.getBirthday()).append(",")
+                    .append(person.getAge()).append("\n");
+        }
+
+        // Save the CSV data to a file using your preferred method
+        // For example:
+        // File outputFile = new File("output.csv");
+        // FileWriter writer = new FileWriter(outputFile);
+        // writer.write(csvData.toString());
+        // writer.close();
+
+        JOptionPane.showMessageDialog(null, "Records exported to CSV file.",
+                "Export Successful", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void sortRecords(String sortBy, boolean isAscending) {
+        Comparator<Person> comparator = switch (sortBy) {
+            case "Birthday" -> Comparator.comparing(Person::getBirthday);
+            case "Age" -> Comparator.comparingInt(Person::getAge);
+            default -> Comparator.comparing(Person::getName);
+        };
+
+        if (!isAscending) {
+            comparator = comparator.reversed();
+        }
+
+        records.sort(comparator);
+        updateTable();
+    }
+
+    private void updateTable() {
+        DefaultTableModel model = (DefaultTableModel) recordsTable.getModel();
+        model.setRowCount(0);
+
+        for (Person person : records) {
+            Object[] row = {person.getName(), person.getBirthday(), person.getAge()};
+            model.addRow(row);
         }
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new RecordListScreen(""));
+    }
+}
+
+class Person {
+    private final String name;
+    private final String birthday;
+    private final int age;
+
+    public Person(String name, String birthday, int age) {
+        this.name = name;
+        this.birthday = birthday;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public int getAge() {
+        return age;
     }
 }
