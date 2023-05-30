@@ -182,14 +182,14 @@ public class RecordListScreen extends Point {
         }
     }
 
-    private boolean removeRecordList() {
+    private void removeRecordList() {
         JFrame removeRecord = new JFrame("Remove a Record");
         JPanel removePanel = new JPanel(new GridLayout(5, 2));
 
         JLabel namePanel = new JLabel("Name:");
         JTextField nameField = new JTextField();
         JButton removeGoBackButton = new JButton("Remove and Go Back");
-        JButton removeAnotherButton = new JButton("Remove Another");
+        JButton removeAnotherButton = new JButton("Remove and Remove Another");
         JButton backButton = new JButton("Back");
 
         removePanel.add(namePanel);
@@ -209,7 +209,27 @@ public class RecordListScreen extends Point {
                             JOptionPane.showMessageDialog(removePanel, "The record is removed.");
                             updateTable();
                             removeRecord.setVisible(false);
-                            namePanel.setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(removePanel, "No such record is found.");
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(removePanel, "Please enter a name.");
+                }
+            }
+        });
+
+        removeAnotherButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText().trim();
+                if (!name.isEmpty()) {
+                    int confirm = JOptionPane.showConfirmDialog(removePanel, "Remove this record?", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        boolean removed = removeRecord(name);
+                        if (removed) {
+                            JOptionPane.showMessageDialog(removePanel, "The record is removed.");
+                            updateTable();
+                            nameField.setText(""); // Clear the name field for removing another record
                         } else {
                             JOptionPane.showMessageDialog(removePanel, "No such record is found.");
                         }
@@ -223,21 +243,28 @@ public class RecordListScreen extends Point {
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 removeRecord.setVisible(false);
-                namePanel.setVisible(true);
             }
         });
 
-
-        removePanel.add(removePanel);
-        removePanel.setSize(300,200);
-        removePanel.setLocation(this);
-        removePanel.setVisible(true);
-        return false;
+        removeRecord.add(removePanel);
+        removeRecord.setSize(300, 200);
+        removeRecord.setLocationRelativeTo(null);
+        removeRecord.setVisible(true);
     }
+
+
+
 
     private boolean removeRecord(String name) {
+        for (Person person : records) {
+            if (person.getName().equalsIgnoreCase(name)) {
+                records.remove(person);
+                return true;
+            }
+        }
         return false;
     }
+
 
 
     private void exportToCSV() {
