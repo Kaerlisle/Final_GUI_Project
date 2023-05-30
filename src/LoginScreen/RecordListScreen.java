@@ -41,7 +41,7 @@ public class RecordListScreen {
         JLabel sortLabel = new JLabel("Sort By:");
         sortingPanel.add(sortLabel);
 
-        String[] sortingOptions = { "Name", "Birthday", "Age" };
+        String[] sortingOptions = {"Name", "Birthday", "Age"};
         JComboBox<String> sortComboBox = new JComboBox<>(sortingOptions);
         sortingPanel.add(sortComboBox);
 
@@ -84,13 +84,13 @@ public class RecordListScreen {
         });
     }
 
-    private String[] months(){
-        return new String []{
+    private String[] months() {
+        return new String[]{
                 "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
         };
     }
 
-    private String[] days(){
+    private String[] days() {
         String[] days = new String[31];
 
         for (int i = 1; i <= 31; i++) {
@@ -99,7 +99,7 @@ public class RecordListScreen {
         return days;
     }
 
-    private String[] year(){
+    private String[] year() {
         String[] year = new String[100];
         int currentYear = LocalDate.now().getYear();
 
@@ -115,10 +115,9 @@ public class RecordListScreen {
         JTextField nameField = new JTextField(20);
         JLabel bdayLabel = new JLabel("Birthday:");
 
-
-        JComboBox<String> monthComboBox = new JComboBox<>(months());
-        JComboBox<String> dayComboBox = new JComboBox<>(days());
-        JComboBox<String> yearComboBox = new JComboBox<>(year());
+        JComboBox<String> monthComboBox= new JComboBox<>(months());
+        JComboBox<String> dayComboBox= new JComboBox<>(days());
+        JComboBox<String> yearComboBox= new JComboBox<>(year());
 
         panel.add(nameLabel);
         panel.add(nameField);
@@ -129,33 +128,58 @@ public class RecordListScreen {
         panel.add(new JLabel("")); // Placeholder for alignment
         panel.add(yearComboBox);
 
-        //
-        int result = JOptionPane.showOptionDialog(null, panel, "Add a Record", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-                new String[]{"Save and Go Back", "Save and Add Another", "Back"}, "Save and Go Back");
+        boolean addAnother = true;
+        while (addAnother) {
+            int result = JOptionPane.showOptionDialog(null, panel, "Add a Record", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+                    new String[]{"Save and Go Back", "Save and Add Another", "Back"}, "Save and Go Back");
 
-        if (result == JOptionPane.OK_OPTION) {
-            String name = nameField.getText();
-            String month = (String) monthComboBox.getSelectedItem();
-            String day = (String) dayComboBox.getSelectedItem();
-            String year = (String) yearComboBox.getSelectedItem();
+            if (result == JOptionPane.CLOSED_OPTION) {
+                addAnother = false;
+            } else if (result == 2) {
+                break;
+            } else {
+                String name = nameField.getText();
+                if (!name.isEmpty()) {
+                    int selectedMonth = monthComboBox.getSelectedIndex() + 1;
+                    int selectedDay = Integer.parseInt((String) dayComboBox.getSelectedItem());
+                    int selectedYear = Integer.parseInt((String) yearComboBox.getSelectedItem());
 
-            // Calculate age
-            LocalDate currentDate = LocalDate.now();
-            LocalDate birthdate = LocalDate.parse(month + " " + day + " " + year, DateTimeFormatter.ofPattern("MMMM d yyyy"));
-            int age = currentDate.getYear() - birthdate.getYear();
+                    try {
+                        LocalDate currentDate = LocalDate.now();
+                        LocalDate birthdate = LocalDate.of(selectedYear, selectedMonth, selectedDay);
+                        if (birthdate.isAfter(currentDate)) {
+                            throw new IllegalArgumentException("Invalid birthdate. Date cannot be in the future.");
+                        }
 
-            if (birthdate.getDayOfYear() > currentDate.getDayOfYear()) {
-                age--;
+                        int age = currentDate.getYear() - birthdate.getYear();
+                        Person person = new Person(name, birthdate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")), age);
+                        records.add(person);
+                        updateTable();
+
+                        if (result == 0) {
+                            addAnother = false; // Save and Go Back
+                        } else {
+                            // Clear input fields for adding another record
+                            nameField.setText("");
+                            monthComboBox.setSelectedIndex(0);
+                            dayComboBox.setSelectedIndex(0);
+                            yearComboBox.setSelectedIndex(0);
+                        }
+                    } catch (IllegalArgumentException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Invalid Input",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                    catch (Exception error) {
+                        JOptionPane.showMessageDialog(null, "Invalid birthdate format.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Name input is missing.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            Person person = new Person(name, birthdate.format(DateTimeFormatter.ofPattern("MMMM d yyyy")), age);
-            records.add(person);
-            updateTable();
         }
-        else {
-            JOptionPane.showMessageDialog(null, "Name input is missing.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
-        }
-
     }
+
+
 
     private void removeRecord() {
         String name = JOptionPane.showInputDialog(null, "Enter the name of the record to remove:",
