@@ -3,12 +3,15 @@ package LoginScreen;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class RecordListScreen {
     private final ArrayList<Person> records;
     private JTable recordsTable;
+    private ComboBoxModel<Object> monthComboBox;
 
     public RecordListScreen(String username) {
         this.records = new ArrayList<>();
@@ -79,12 +82,11 @@ public class RecordListScreen {
     }
 
     private void addRecord() {
-        JPanel panel = new JPanel(new GridLayout(3, 2));
-
+        JPanel panel = new JPanel(new GridLayout(4, 2));
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
-
         JLabel bdayLabel = new JLabel("Birthday:");
+
         String[] sortingOptions = {"January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"};
         JComboBox<String> sortMonths = new JComboBox<>(sortingOptions);
@@ -94,29 +96,42 @@ public class RecordListScreen {
         for (int i = 1; i <= 31; i++) {
             days[i - 1] = String.valueOf(i);
         }
-
         JComboBox<String> dayComboBox = new JComboBox<>(days);
 
         // ComboBox (year)
-        String
-
-        JLabel ageLabel = new JLabel("Age:");
-
+        String[] years = new String[100];
+        int currentYear = LocalDate.now().getYear();
+        for (int i = 0; i < 100; i++) {
+            years[i] = String.valueOf(currentYear - i);
+        }
+        JComboBox<String> yearComboBox = new JComboBox<>(years);
 
         panel.add(nameLabel);
         panel.add(nameField);
         panel.add(bdayLabel);
-        panel.add(sortMonths);
-        panel.add(ageLabel);
-        panel.add(ageField);
+        panel.add(monthComboBox);
+        panel.add(new JLabel("")); // Placeholder for alignment
+        panel.add(dayComboBox);
+        panel.add(new JLabel("")); // Placeholder for alignment
+        panel.add(yearComboBox);
 
         int result = JOptionPane.showConfirmDialog(null, panel, "Add Record",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             String name = nameField.getText();
-            String birthday = (String) sortMonths.getSelectedItem();
-            int age = Integer.parseInt(ageField.getText());
-            Person person = new Person(name, birthday, age);
+            String month = (String) monthComboBox.getSelectedItem();
+            String day = (String) dayComboBox.getSelectedItem();
+            String year = (String) yearComboBox.getSelectedItem();
+
+            // Calculate age
+            LocalDate currentDate = LocalDate.now();
+            LocalDate birthdate = LocalDate.parse(day + " " + month + " " + year, DateTimeFormatter.ofPattern("d MMMM yyyy"));
+            int age = currentDate.getYear() - birthdate.getYear();
+            if (birthdate.getDayOfYear() > currentDate.getDayOfYear()) {
+                age--;
+            }
+
+            Person person = new Person(name, birthdate.format(DateTimeFormatter.ofPattern("d MMMM yyyy")), age);
             records.add(person);
             updateTable();
         }
