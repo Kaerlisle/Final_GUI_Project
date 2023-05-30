@@ -80,23 +80,22 @@ public class RecordListScreen {
 
     private void addRecord() {
         JPanel panel = new JPanel(new GridLayout(3, 2));
+
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
 
         JLabel bdayLabel = new JLabel("Birthday:");
-        String[] sortingOptions = { "January", "February", "March" };
+        String[] sortingOptions = {"January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"};
         JComboBox<String> sortMonths = new JComboBox<>(sortingOptions);
-        panel.add(sortMonths);
 
-
-        JTextField bdayField = new JTextField(10);
         JLabel ageLabel = new JLabel("Age:");
         JTextField ageField = new JTextField(3);
 
         panel.add(nameLabel);
         panel.add(nameField);
         panel.add(bdayLabel);
-        panel.add(bdayField);
+        panel.add(sortMonths);
         panel.add(ageLabel);
         panel.add(ageField);
 
@@ -104,7 +103,7 @@ public class RecordListScreen {
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             String name = nameField.getText();
-            String birthday = bdayField.getText();
+            String birthday = (String) sortMonths.getSelectedItem();
             int age = Integer.parseInt(ageField.getText());
             Person person = new Person(name, birthday, age);
             records.add(person);
