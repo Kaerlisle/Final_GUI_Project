@@ -180,8 +180,6 @@ public class RecordListScreen extends Point {
         }
     }
 
-
-
     private void removeRecord() {
         JFrame removeRecord = new JFrame("Remove a Record");
         JPanel removePanel = new JPanel(new GridLayout(5, 2));
