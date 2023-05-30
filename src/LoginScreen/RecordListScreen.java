@@ -149,7 +149,7 @@ public class RecordListScreen {
                         LocalDate currentDate = LocalDate.now();
                         LocalDate birthdate = LocalDate.of(selectedYear, selectedMonth, selectedDay);
                         if (birthdate.isAfter(currentDate)) {
-                            throw new IllegalArgumentException("Invalid birthdate. Date cannot be in the future.");
+                            throw new IllegalArgumentException("Birthdate non-existent.");
                         }
 
                         int age = currentDate.getYear() - birthdate.getYear();
@@ -167,11 +167,11 @@ public class RecordListScreen {
                             yearComboBox.setSelectedIndex(0);
                         }
                     } catch (IllegalArgumentException ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Invalid Input",
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error: Invalid Input",
                                 JOptionPane.ERROR_MESSAGE);
                     }
                     catch (Exception error) {
-                        JOptionPane.showMessageDialog(null, "Invalid birthdate format.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Invalid birthdate format.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Name input is missing.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
