@@ -20,7 +20,8 @@ public class RecordListScreen {
         frame.setVisible(true);
         frame.setLayout(new GridLayout(4, 4));
 
-        JPanel titleOfRecords = new JPanel();
+        //list of records of user's name, birthday, and age
+        JPanel titleOfRecords = new JPanel(new GridLayout(1, 3));
         JLabel name = new JLabel("Name");
         JLabel bday = new JLabel("Birthday");
         JLabel age = new JLabel("Age");
@@ -29,12 +30,12 @@ public class RecordListScreen {
         titleOfRecords.add(bday);
         titleOfRecords.add(age);
 
-
+        //table for the records of user
         JPanel listsOfRecords = new JPanel(new BorderLayout());
         JTable records = new JTable();
         listsOfRecords.add(records);
 
-
+        //sorting part where you sort the list in a given order
         JPanel sortingLabels = new JPanel();
         JLabel sotLabelText = new JLabel("Sort By:");
         sortingLabels.add(sotLabelText);
@@ -49,6 +50,7 @@ public class RecordListScreen {
         sortingLabels.add(ascButton);
         sortingLabels.add(descButton);
 
+        //buttons on where another action executes
         JPanel buttons = new JPanel();
         JButton addB = new JButton("Add a Record");
         JButton remB = new JButton("Remove a Record");
@@ -58,22 +60,39 @@ public class RecordListScreen {
         buttons.add(remB);
         buttons.add(expoB);
 
+        //
         frame.add(titleOfRecords);
         //frame.add();
         frame.add(sortingLabels);
         frame.add(buttons);
-
-        /*
-        JComboBox
-        JList
-        JTable
-        JTextArea
-        JRadioButton
-        */
     }
+
+    /*
+    private void addRecords() {
+        //
+        JPanel name = new JPanel();
+        JLabel label11 = new JLabel("Name:");
+        name.add(label11);
+        JTextField recName = new JTextField(10);
+        name.add(recName);
+
+        //
+        String[] sortingList = { "January"};
+        JComboBox comboxMonth = new JComboBox(sortingList);
+        .add(comboxMonth);
+    }
+    */
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new RecordListScreen(""));
+
+        /*
+        AbstractButton ascButton;
+        ascButton.addActionListener(e -> {
+            String getSortBy = sortingList.getText();
+
+        });
+        */
     }
 }
 
