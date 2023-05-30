@@ -110,6 +110,7 @@ public class RecordListScreen {
     }
 
     private void addRecord() {
+        //setVisible(false);
         JPanel panel = new JPanel(new GridLayout(4, 2));
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
