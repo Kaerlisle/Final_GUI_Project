@@ -92,6 +92,12 @@ public class RecordListScreen {
         JLabel ageLabel = new JLabel("Age:");
         JTextField ageField = new JTextField(3);
 
+        String[] months ={
+                "January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"
+        };
+        JComboBox<String> monthComboBox = new JComboBox<>(months);
+
         panel.add(nameLabel);
         panel.add(nameField);
         panel.add(bdayLabel);
