@@ -141,13 +141,25 @@ public class RecordListScreen {
     }
 
     private void removeRecord() {
-        int selectedRow = recordsTable.getSelectedRow();
-        if (selectedRow >= 0) {
-            records.remove(selectedRow);
-            updateTable();
+        String name = JOptionPane.showInputDialog(null, "Enter the name of the record to remove:",
+                "Remove Record", JOptionPane.PLAIN_MESSAGE);
+        if (name != null && !name.isEmpty()) {
+            boolean removed = false;
+            for (Person person : records) {
+                if (person.getName().equals(name)) {
+                    records.remove(person);
+                    removed = true;
+                    break;
+                }
+            }
+            if (removed) {
+                updateTable();
+            } else {
+                JOptionPane.showMessageDialog(null, "Record not found.", "No Record Found", JOptionPane.WARNING_MESSAGE);
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Please select a record to remove.",
-                    "No Record Selected", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter a name to remove a record.",
+                    "No Name Entered", JOptionPane.WARNING_MESSAGE);
         }
     }
 
