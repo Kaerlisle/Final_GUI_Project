@@ -24,7 +24,7 @@ public class RecordListScreen {
     private void initializeUI() {
         JFrame frame = new JFrame("List of Records");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 500);
+        frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
 
         JPanel titlePanel = new JPanel(new GridLayout());
