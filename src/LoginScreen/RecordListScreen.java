@@ -202,8 +202,7 @@ public class RecordListScreen extends Point {
                             yearComboBox.setSelectedIndex(0);
                         }
                     } catch (IllegalArgumentException ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error: Invalid Input",
-                                JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
                     }
                     catch (Exception error) {
                         JOptionPane.showMessageDialog(null, "Invalid birthdate format.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
