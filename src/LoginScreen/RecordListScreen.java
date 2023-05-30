@@ -3,17 +3,13 @@ package LoginScreen;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 
-public class RecordListScreen {
+
+public class RecordListScreen extends Point {
     private final ArrayList<Person> records;
     private JTable recordsTable;
     private ComboBoxModel<Object> monthComboBox;
@@ -199,7 +195,7 @@ public class RecordListScreen {
         removePanel.add(removeAnotherButton);
         removePanel.add(backButton);
 
-        removeGoBackButton.addActionListener(new ActionListener() {
+        /*removeGoBackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 String name = namePanel.getText().trim();
                 if (name.isEmpty()) {
@@ -214,7 +210,7 @@ public class RecordListScreen {
                         updateTable();
                         removeRecord.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(removePanel, "Input a name.", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(removePanel, "Input a name.");
                     }
                 }
             }
@@ -223,7 +219,7 @@ public class RecordListScreen {
             public void actionPerformed(ActionEvent e) {
                 removePanel.dispose();
             }
-        });
+        });.*/
 
         removePanel.add(removePanel);
         removePanel.setSize(300,200);
