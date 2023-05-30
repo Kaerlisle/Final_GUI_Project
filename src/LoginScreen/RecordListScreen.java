@@ -3,6 +3,8 @@ package LoginScreen;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -73,7 +75,7 @@ public class RecordListScreen extends Point {
 
         addButton.addActionListener(e -> addRecord());
 
-        removeButton.addActionListener(e -> removeRecord());
+        removeButton.addActionListener(e -> removeRecordList());
 
         exportButton.addActionListener(e -> exportToCSV());
 
@@ -180,7 +182,7 @@ public class RecordListScreen extends Point {
         }
     }
 
-    private void removeRecord() {
+    private boolean removeRecordList() {
         JFrame removeRecord = new JFrame("Remove a Record");
         JPanel removePanel = new JPanel(new GridLayout(5, 2));
 
@@ -196,36 +198,45 @@ public class RecordListScreen extends Point {
         removePanel.add(removeAnotherButton);
         removePanel.add(backButton);
 
-        /*removeGoBackButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                String name = namePanel.getText().trim();
-                if (name.isEmpty()) {
+        removeGoBackButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String name = nameField.getText().trim();
+                if (!name.isEmpty()) {
                     int confirm = JOptionPane.showConfirmDialog(removePanel, "Remove this record?", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
                         boolean removed = removeRecord(name);
                         if (removed) {
                             JOptionPane.showMessageDialog(removePanel, "The record is removed.");
+                            updateTable();
+                            removeRecord.setVisible(false);
+                            namePanel.setVisible(true);
                         } else {
                             JOptionPane.showMessageDialog(removePanel, "No such record is found.");
                         }
-                        updateTable();
-                        removeRecord.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(removePanel, "Input a name.");
                     }
+                } else {
+                    JOptionPane.showMessageDialog(removePanel, "Please enter a name.");
                 }
             }
         });
+
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                removePanel.dispose();
+                removeRecord.setVisible(false);
+                namePanel.setVisible(true);
             }
-        });.*/
+        });
+
 
         removePanel.add(removePanel);
         removePanel.setSize(300,200);
         removePanel.setLocation(this);
         removePanel.setVisible(true);
+        return false;
+    }
+
+    private boolean removeRecord(String name) {
+        return false;
     }
 
 
@@ -305,4 +316,3 @@ class Person {
         return age;
     }
 }
-
