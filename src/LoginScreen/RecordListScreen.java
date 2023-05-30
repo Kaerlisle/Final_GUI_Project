@@ -82,7 +82,13 @@ public class RecordListScreen {
         JPanel panel = new JPanel(new GridLayout(3, 2));
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
+
         JLabel bdayLabel = new JLabel("Birthday:");
+        String[] sortingOptions = { "January", "February", "March" };
+        JComboBox<String> sortMonths = new JComboBox<>(sortingOptions);
+        panel.add(sortMonths);
+
+
         JTextField bdayField = new JTextField(10);
         JLabel ageLabel = new JLabel("Age:");
         JTextField ageField = new JTextField(3);
