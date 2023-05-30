@@ -109,7 +109,7 @@ public class RecordListScreen {
         panel.add(nameLabel);
         panel.add(nameField);
         panel.add(bdayLabel);
-        panel.add(monthComboBox);
+        panel.add((PopupMenu) monthComboBox);
         panel.add(new JLabel("")); // Placeholder for alignment
         panel.add(dayComboBox);
         panel.add(new JLabel("")); // Placeholder for alignment
