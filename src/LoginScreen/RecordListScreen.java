@@ -127,6 +127,7 @@ public class RecordListScreen {
                     .append(person.getAge()).append("\n");
         }
 
+        // Ayusin ko to later pag tapos na kayo para macheck yung csv
         // Save the CSV data to a file using your preferred method
         // For example:
         // File outputFile = new File("output.csv");
