@@ -113,7 +113,7 @@ public class RecordListScreen extends Point {
     }
 
     private void addRecord() {
-        JPanel panel = new JPanel(new GridLayout(6, 1));
+        JPanel panel = new JPanel(new GridLayout(5, 2));
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
         JLabel bdayLabel = new JLabel("Birthday:");
@@ -126,9 +126,9 @@ public class RecordListScreen extends Point {
         panel.add(nameField);
         panel.add(bdayLabel);
         panel.add(monthComboBox);
-        //panel.add(new JLabel("")); // Placeholder for alignment
+        panel.add(new JLabel("")); // Placeholder for alignment
         panel.add(dayComboBox);
-        //panel.add(new JLabel("")); // Placeholder for alignment
+        panel.add(new JLabel("")); // Placeholder for alignment
         panel.add(yearComboBox);
 
         boolean addAnother = true;
