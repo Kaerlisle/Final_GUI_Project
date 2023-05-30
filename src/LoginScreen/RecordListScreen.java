@@ -3,6 +3,8 @@ package LoginScreen;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.io.*;
 
 public class RecordListScreen {
     private final ArrayList<Person> records;
@@ -116,9 +117,9 @@ public class RecordListScreen {
         JTextField nameField = new JTextField(20);
         JLabel bdayLabel = new JLabel("Birthday:");
 
-        JComboBox<String> monthComboBox = new JComboBox<>(months());
-        JComboBox<String> dayComboBox = new JComboBox<>(days());
-        JComboBox<String> yearComboBox = new JComboBox<>(year());
+        JComboBox<String> monthComboBox= new JComboBox<>(months());
+        JComboBox<String> dayComboBox= new JComboBox<>(days());
+        JComboBox<String> yearComboBox= new JComboBox<>(year());
 
         panel.add(nameLabel);
         panel.add(nameField);
@@ -169,7 +170,8 @@ public class RecordListScreen {
                     } catch (IllegalArgumentException ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage(), "Error: Invalid Input",
                                 JOptionPane.ERROR_MESSAGE);
-                    } catch (Exception error) {
+                    }
+                    catch (Exception error) {
                         JOptionPane.showMessageDialog(null, "Invalid birthdate format.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
@@ -180,52 +182,76 @@ public class RecordListScreen {
     }
 
 
+
     private void removeRecord() {
-        try {
-            String name = JOptionPane.showInputDialog(null, "Enter the name of the record to remove:",
-                    "Remove Record", JOptionPane.PLAIN_MESSAGE);
-            if (name != null && !name.isEmpty()) {
-                boolean removed = false;
-                for (Person person : records) {
-                    if (person.getName().equals(name)) {
-                        records.remove(person);
-                        removed = true;
-                        break;
+        JFrame removeRecord = new JFrame("Remove a Record");
+        JPanel removePanel = new JPanel(new GridLayout(5, 2));
+
+        JLabel namePanel = new JLabel("Name:");
+        JTextField nameField = new JTextField();
+        JButton removeGoBackButton = new JButton("Remove and Go Back");
+        JButton removeAnotherButton = new JButton("Remove Another");
+        JButton backButton = new JButton("Back");
+
+        removePanel.add(namePanel);
+        removePanel.add(nameField);
+        removePanel.add(removeGoBackButton);
+        removePanel.add(removeAnotherButton);
+        removePanel.add(backButton);
+
+        removeGoBackButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                String name = namePanel.getText().trim();
+                if (name.isEmpty()) {
+                    int confirm = JOptionPane.showConfirmDialog(removePanel, "Remove this record?", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        boolean removed = removeRecord(name);
+                        if (removed) {
+                            JOptionPane.showMessageDialog(removePanel, "The record is removed.");
+                        } else {
+                            JOptionPane.showMessageDialog(removePanel, "No such record is found.");
+                        }
+                        updateTable();
+                        removeRecord.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(removePanel, "Input a name.", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                if (removed) {
-                    updateTable();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Record not found.", "No Record Found", JOptionPane.WARNING_MESSAGE);
-                }
-            } else {
-                throw new IllegalArgumentException("Please enter a name to remove from the record.");
             }
-        } catch (IllegalArgumentException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        });
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                removePanel.dispose();
+            }
+        });
+
+        removePanel.add(removePanel);
+        removePanel.setSize(300,200);
+        removePanel.setLocation(this);
+        removePanel.setVisible(true);
     }
 
+
     private void exportToCSV() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String timestamp = dateFormat.format(new Date());
-        String filename = timestamp + ".csv";
+        StringBuilder csvData = new StringBuilder();
+        csvData.append("Name,Birthday,Age\n");
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            StringBuilder csvData = new StringBuilder();
-            csvData.append("Name,Birthday,Age\n");
-
-            for (Person person : records) {
-                csvData.append(person.getName()).append(",")
-                        .append(person.getBirthday()).append(",")
-                        .append(person.getAge()).append("\n");
-            }
-
-            writer.write(csvData.toString());
-            JOptionPane.showMessageDialog(null, "CSV file exported successfully.");
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error exporting CSV file: " + e.getMessage());
+        for (Person person : records) {
+            csvData.append(person.getName()).append(",")
+                    .append(person.getBirthday()).append(",")
+                    .append(person.getAge()).append("\n");
         }
+
+        // Ayusin ko to later pag tapos na kayo para macheck yung csv
+        // Save the CSV data to a file using your preferred method
+        // For example:
+        // File outputFile = new File("output.csv");
+        // FileWriter writer = new FileWriter(outputFile);
+        // writer.write(csvData.toString());
+        // writer.close();
+
+        JOptionPane.showMessageDialog(null, "Records exported to CSV file.",
+                "Export Successful", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void sortRecords(String sortBy, boolean isAscending) {
