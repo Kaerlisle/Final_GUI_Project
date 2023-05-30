@@ -87,21 +87,21 @@ public class RecordListScreen {
         JTextField nameField = new JTextField(20);
         JLabel bdayLabel = new JLabel("Birthday:");
 
-        // ComboBox for Month
+        // ComboBox (month)
         String[] months = {
                 "January", "February", "March", "April", "May", "June", "July",
                 "August", "September", "October", "November", "December"
         };
         JComboBox<String> monthComboBox = new JComboBox<>(months);
 
-        // ComboBox for Day
+        // ComboBox (day)
         String[] days = new String[31];
         for (int i = 1; i <= 31; i++) {
             days[i - 1] = String.valueOf(i);
         }
         JComboBox<String> dayComboBox = new JComboBox<>(days);
 
-        // ComboBox for Year
+        // ComboBox (year)
         String[] years = new String[100];
         int currentYear = LocalDate.now().getYear();
         for (int i = 0; i < 100; i++) {
