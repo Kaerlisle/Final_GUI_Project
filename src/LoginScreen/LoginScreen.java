@@ -1,6 +1,7 @@
 package LoginScreen;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -73,6 +74,7 @@ public class LoginScreen extends JFrame {
 
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(185, 110, 100, 25);
+        loginButton.setBackground(Color.WHITE);
         add(loginButton);
 
         loginButton.addActionListener(e -> validateCredentials());

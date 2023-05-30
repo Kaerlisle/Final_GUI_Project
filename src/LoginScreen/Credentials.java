@@ -19,3 +19,4 @@ public class Credentials {
         return storedPassword != null && storedPassword.equals(password);
     }
 }
+    

@@ -12,12 +12,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.io.*;
 import java.util.Date;
+import javax.swing.table.JTableHeader;
+
 
 
 public class RecordListScreen extends Point {
     private final ArrayList<Person> records;
     private JTable recordsTable;
-    private ComboBoxModel<Object> monthComboBox;
 
     public RecordListScreen(String username) {
         this.records = new ArrayList<>();
@@ -30,7 +31,7 @@ public class RecordListScreen extends Point {
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
 
-        JPanel titlePanel = new JPanel(new GridLayout(4,1));
+        JPanel titlePanel = new JPanel();
 
         JPanel recordsPanel = new JPanel(new BorderLayout());
         DefaultTableModel model = new DefaultTableModel();
@@ -38,14 +39,23 @@ public class RecordListScreen extends Point {
         model.addColumn("Name");
         model.addColumn("Birthday");
         model.addColumn("Age");
-        recordsPanel.add(new JScrollPane(recordsTable));
+        JTableHeader header = recordsTable.getTableHeader();
+        header.setFont(header.getFont().deriveFont(Font.BOLD));
+        header.setBackground(Color.decode("#D0F0C0"));
+        header.setForeground(Color.BLACK);
+
+        recordsTable.setFont(recordsTable.getFont().deriveFont(Font.PLAIN));
+        recordsTable.setBackground(Color.white);
+        recordsTable.setForeground(Color.black);
+        recordsPanel.add(new JScrollPane(recordsTable), BorderLayout.CENTER);
 
         JPanel sortingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel sortLabel = new JLabel("Sort By:");
         sortingPanel.add(sortLabel);
 
-        String[] sortingOptions = {"Name", "Birthday", "Age"};
+        String[] sortingOptions = { "Name", "Birthday", "Age" };
         JComboBox<String> sortComboBox = new JComboBox<>(sortingOptions);
+        sortComboBox.setBackground(Color.WHITE);
         sortingPanel.add(sortComboBox);
 
         JRadioButton ascButton = new JRadioButton("Ascending");
@@ -64,11 +74,15 @@ public class RecordListScreen extends Point {
         buttonsPanel.add(addButton);
         buttonsPanel.add(removeButton);
         buttonsPanel.add(exportButton);
+        addButton.setBackground(Color.WHITE);
+        removeButton.setBackground(Color.WHITE);
+        exportButton.setForeground(Color.WHITE);
+        exportButton.setBackground(Color.decode("#028A0F"));
 
         frame.setLayout(new BorderLayout());
         frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(recordsPanel, BorderLayout.CENTER);
-        frame.add(sortingPanel, BorderLayout.EAST);
+        frame.add(sortingPanel, BorderLayout.NORTH);
         frame.add(buttonsPanel, BorderLayout.SOUTH);
 
         frame.setVisible(true);
@@ -85,6 +99,21 @@ public class RecordListScreen extends Point {
             assert selectedSortOption != null;
             sortRecords(selectedSortOption, isAscending);
         });
+
+        for (Component component : buttonsPanel.getComponents()) {
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
+                Font selectedFont = new Font("Arial", Font.BOLD, 12);
+                button.setFocusPainted(false);
+                button.setFont(selectedFont); // How to change font to JButtons?
+
+                button.setPreferredSize(new Dimension(150, 30));
+
+                button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+                button.setContentAreaFilled(false);
+                button.setOpaque(true);
+            }
+        }
     }
 
     private String[] months() {
@@ -113,7 +142,7 @@ public class RecordListScreen extends Point {
     }
 
     private void addRecord() {
-        JPanel panel = new JPanel(new GridLayout(6, 1));
+        JPanel panel = new JPanel(new GridLayout(5, 2));
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
         JLabel bdayLabel = new JLabel("Birthday:");
@@ -122,13 +151,17 @@ public class RecordListScreen extends Point {
         JComboBox<String> dayComboBox= new JComboBox<>(days());
         JComboBox<String> yearComboBox= new JComboBox<>(year());
 
+        monthComboBox.setBackground(Color.WHITE);
+        dayComboBox.setBackground(Color.WHITE);
+        yearComboBox.setBackground(Color.WHITE);
+
         panel.add(nameLabel);
         panel.add(nameField);
         panel.add(bdayLabel);
         panel.add(monthComboBox);
-        //panel.add(new JLabel("")); // Placeholder for alignment
+        panel.add(new JLabel("")); // Placeholder for alignment
         panel.add(dayComboBox);
-        //panel.add(new JLabel("")); // Placeholder for alignment
+        panel.add(new JLabel("")); // Placeholder for alignment
         panel.add(yearComboBox);
 
         boolean addAnother = true;
@@ -185,6 +218,7 @@ public class RecordListScreen extends Point {
     private void removeRecordList() {
         JFrame removeRecord = new JFrame("Remove a Record");
         JPanel removePanel = new JPanel(new GridLayout(5, 2));
+
 
         JLabel namePanel = new JLabel("Name:");
         JTextField nameField = new JTextField();
@@ -251,6 +285,7 @@ public class RecordListScreen extends Point {
         removeRecord.setLocationRelativeTo(null);
         removeRecord.setVisible(true);
     }
+
 
 
 
