@@ -173,49 +173,53 @@ public class RecordListScreen extends Point {
         while (addAnother) {
             int result = JOptionPane.showOptionDialog(null, panel, "Add a Record", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
                     new String[]{"Save and Go Back", "Save and Add Another", "Back"}, "Save and Go Back");
-
             if (result == JOptionPane.CLOSED_OPTION) {
                 addAnother = false;
-            } else if (result == 2) {
-                break;
-            } else {
-                String name = nameField.getText();
-                if (!name.isEmpty()) {
-                    int selectedMonth = monthComboBox.getSelectedIndex() + 1;
-                    int selectedDay = Integer.parseInt((String) dayComboBox.getSelectedItem());
-                    int selectedYear = Integer.parseInt((String) yearComboBox.getSelectedItem());
-
-                    try {
-                        LocalDate currentDate = LocalDate.now();
-                        LocalDate birthdate = LocalDate.of(selectedYear, selectedMonth, selectedDay);
-                        if (birthdate.isAfter(currentDate)) {
-                            throw new IllegalArgumentException("Birthdate non-existent.");
-                        }
-
-                        int age = currentDate.getYear() - birthdate.getYear();
-                        Person person = new Person(name, birthdate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")), age);
-                        records.add(person);
-                        updateTable();
-
-                        if (result == 0) {
-                            addAnother = false; // Save and Go Back
-                        } else {
-                            // Clear input fields for adding another record
-                            nameField.setText("");
-                            monthComboBox.setSelectedIndex(0);
-                            dayComboBox.setSelectedIndex(0);
-                            yearComboBox.setSelectedIndex(0);
-                        }
-                    } catch (IllegalArgumentException ex) {
-                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
-                    }
-                    catch (Exception error) {
-                        JOptionPane.showMessageDialog(null, "Invalid birthdate format.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Name input is missing.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
-                }
             }
+                else if (result == 2) {
+                    break;
+                }
+                else {
+                    String name = nameField.getText();
+
+                    if (!name.isEmpty()) {
+                        int selectedMonth = monthComboBox.getSelectedIndex() + 1;
+                        int selectedDay = Integer.parseInt((String) dayComboBox.getSelectedItem());
+                        int selectedYear = Integer.parseInt((String) yearComboBox.getSelectedItem());
+
+                        try {
+                            LocalDate currentDate = LocalDate.now();
+                            LocalDate birthdate = LocalDate.of(selectedYear, selectedMonth, selectedDay);
+
+                            if (birthdate.isAfter(currentDate)) {
+                                throw new IllegalArgumentException("Birthdate non-existent.");
+                            }
+                            int age = currentDate.getYear() - birthdate.getYear();
+                            Person person = new Person(name, birthdate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")), age);
+                            records.add(person);
+                            updateTable();
+
+                            if (result == 0) {
+                                addAnother = false; // Save and Go Back
+                                } else {
+                                // Clear input fields for adding another record
+                                nameField.setText("");
+                                monthComboBox.setSelectedIndex(0);
+                                dayComboBox.setSelectedIndex(0);
+                                yearComboBox.setSelectedIndex(0);
+                            }
+                        }
+                        catch (IllegalArgumentException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        }
+                        catch (Exception error) {
+                            JOptionPane.showMessageDialog(null, "Invalid birthdate format.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Name input is missing.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
         }
     }
 
