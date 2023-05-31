@@ -24,7 +24,7 @@ public class LoginScreen extends JFrame {
     }
 
     private void loadCredentialsFromFile() {
-        String fileName = "C:\\Users\\gohan\\Desktop\\FinalProject\\loginCredentials.txt";
+        String fileName = "loginCredentials.txt";
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;

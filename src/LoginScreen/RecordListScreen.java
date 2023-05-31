@@ -5,6 +5,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +21,7 @@ import javax.swing.table.JTableHeader;
 public class RecordListScreen extends Point {
     private final ArrayList<Person> records;
     private JTable recordsTable;
+    private JFrame frame;
 
     public RecordListScreen(String username) {
         this.records = new ArrayList<>();
@@ -26,7 +29,7 @@ public class RecordListScreen extends Point {
     }
 
     private void initializeUI() {
-        JFrame frame = new JFrame("List of Records");
+        frame = new JFrame("List of Records");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
@@ -105,7 +108,7 @@ public class RecordListScreen extends Point {
                 JButton button = (JButton) component;
                 Font selectedFont = new Font("Arial", Font.BOLD, 12);
                 button.setFocusPainted(false);
-                button.setFont(selectedFont); // How to change font to JButtons?
+                button.setFont(selectedFont);
 
                 button.setPreferredSize(new Dimension(150, 30));
 
@@ -224,6 +227,7 @@ public class RecordListScreen extends Point {
     }
 
     private void removeRecordList() {
+        frame.setVisible(false);
         JFrame removeRecord = new JFrame("Remove a Record");
         JPanel removePanel = new JPanel(new GridLayout(5, 2, 5, 5));
         removePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -297,7 +301,14 @@ public class RecordListScreen extends Point {
 
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                removeRecord.setVisible(false);
+                removeRecord.setVisible(false); frame.setVisible(true);
+            }
+        });
+
+        removeRecord.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                frame.setVisible(true);
             }
         });
 
