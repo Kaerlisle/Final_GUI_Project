@@ -266,10 +266,10 @@ public class RecordListScreen extends Point {
                                 removeRecord.setVisible(false);
                                 frame.setVisible(true);
                             } else {
-                                throw new RuntimeException("No such record is found.");
+                                throw new IllegalArgumentException("Record not found. Please enter a valid record name.");
                             }
-                        } catch (RuntimeException ex) {
-                            JOptionPane.showMessageDialog(removePanel, ex.getMessage());
+                        } catch (IllegalArgumentException ex) {
+                            JOptionPane.showMessageDialog(removePanel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 } else {
@@ -288,12 +288,12 @@ public class RecordListScreen extends Point {
                             if (removed) {
                                 JOptionPane.showMessageDialog(removePanel, "The record is removed.");
                                 updateTable();
-                                nameField.setText(""); // Clear the name field for removing another record
+                                nameField.setText("");
                             } else {
-                                throw new RuntimeException("No such record is found.");
+                                throw new IllegalArgumentException("Record not found. Please enter a valid record name.");
                             }
-                        } catch (RuntimeException ex) {
-                            JOptionPane.showMessageDialog(removePanel, ex.getMessage());
+                        } catch (IllegalArgumentException ex) {
+                            JOptionPane.showMessageDialog(removePanel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 } else {
