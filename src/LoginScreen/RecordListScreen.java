@@ -266,10 +266,10 @@ public class RecordListScreen extends Point {
                                 removeRecord.setVisible(false);
                                 frame.setVisible(true);
                             } else {
-                                throw new IllegalArgumentException("Record not found. Please enter a valid record name.");
+                                throw new IllegalArgumentException("No such record is found.");
                             }
                         } catch (IllegalArgumentException ex) {
-                            JOptionPane.showMessageDialog(removePanel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(removePanel, ex.getMessage());
                         }
                     }
                 } else {
@@ -288,12 +288,12 @@ public class RecordListScreen extends Point {
                             if (removed) {
                                 JOptionPane.showMessageDialog(removePanel, "The record is removed.");
                                 updateTable();
-                                nameField.setText("");
+                                nameField.setText(""); // Clear the name field for removing another record
                             } else {
-                                throw new IllegalArgumentException("Record not found. Please enter a valid record name.");
+                                throw new IllegalArgumentException("No such record is found.");
                             }
                         } catch (IllegalArgumentException ex) {
-                            JOptionPane.showMessageDialog(removePanel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(removePanel, ex.getMessage());
                         }
                     }
                 } else {
@@ -321,10 +321,6 @@ public class RecordListScreen extends Point {
         removeRecord.setVisible(true);
     }
 
-
-
-
-
     private boolean removeRecord(String name) {
         for (Person person : records) {
             if (person.getName().equalsIgnoreCase(name)) {
@@ -334,7 +330,6 @@ public class RecordListScreen extends Point {
         }
         return false;
     }
-
 
 
     private void exportToCSV() {
