@@ -262,6 +262,7 @@ public class RecordListScreen extends Point {
                                 JOptionPane.showMessageDialog(removePanel, "The record is removed.");
                                 updateTable();
                                 removeRecord.setVisible(false);
+                                frame.setVisible(true);
                             } else {
                                 throw new RuntimeException("No such record is found.");
                             }
