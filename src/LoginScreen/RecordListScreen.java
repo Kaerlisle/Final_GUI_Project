@@ -45,7 +45,7 @@ public class RecordListScreen extends Point {
         header.setForeground(Color.BLACK);
 
         recordsTable.setFont(recordsTable.getFont().deriveFont(Font.PLAIN));
-        recordsTable.setBackground(Color.white);
+        recordsTable.setBackground(Color.darkGray);
         recordsTable.setForeground(Color.black);
         recordsPanel.add(new JScrollPane(recordsTable), BorderLayout.CENTER);
 
@@ -142,27 +142,32 @@ public class RecordListScreen extends Point {
     }
 
     private void addRecord() {
-        JPanel panel = new JPanel(new GridLayout(5, 2));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JPanel namePanel = new JPanel();
+        namePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
+        namePanel.add(nameLabel);
+        namePanel.add(nameField);
+
+        JPanel bdayPanel = new JPanel();
+        bdayPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JLabel bdayLabel = new JLabel("Birthday:");
-
-        JComboBox<String> monthComboBox= new JComboBox<>(months());
-        JComboBox<String> dayComboBox= new JComboBox<>(days());
-        JComboBox<String> yearComboBox= new JComboBox<>(year());
-
+        JComboBox<String> monthComboBox = new JComboBox<>(months());
+        JComboBox<String> dayComboBox = new JComboBox<>(days());
+        JComboBox<String> yearComboBox = new JComboBox<>(year());
         monthComboBox.setBackground(Color.WHITE);
         dayComboBox.setBackground(Color.WHITE);
         yearComboBox.setBackground(Color.WHITE);
+        bdayPanel.add(bdayLabel);
+        bdayPanel.add(monthComboBox);
+        bdayPanel.add(dayComboBox);
+        bdayPanel.add(yearComboBox);
 
-        panel.add(nameLabel);
-        panel.add(nameField);
-        panel.add(bdayLabel);
-        panel.add(monthComboBox);
-        panel.add(new JLabel("")); // Placeholder for alignment
-        panel.add(dayComboBox);
-        panel.add(new JLabel("")); // Placeholder for alignment
-        panel.add(yearComboBox);
+        panel.add(namePanel);
+        panel.add(bdayPanel);
 
         boolean addAnother = true;
         while (addAnother) {
@@ -216,8 +221,8 @@ public class RecordListScreen extends Point {
 
     private void removeRecordList() {
         JFrame removeRecord = new JFrame("Remove a Record");
-        JPanel removePanel = new JPanel(new GridLayout(5, 2));
-
+        JPanel removePanel = new JPanel(new GridLayout(5, 2, 5, 5));
+        removePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel namePanel = new JLabel("Name:");
         JTextField nameField = new JTextField();
@@ -230,6 +235,12 @@ public class RecordListScreen extends Point {
         removePanel.add(removeGoBackButton);
         removePanel.add(removeAnotherButton);
         removePanel.add(backButton);
+
+        backButton.setBackground(Color.WHITE);
+        removeGoBackButton.setForeground(Color.WHITE);
+        removeGoBackButton.setBackground(Color.decode("#028A0F"));
+        removeAnotherButton.setForeground(Color.WHITE);
+        removeAnotherButton.setBackground(Color.decode("#028A0F"));
 
         removeGoBackButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
