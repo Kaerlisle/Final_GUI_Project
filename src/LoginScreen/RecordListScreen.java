@@ -149,13 +149,16 @@ public class RecordListScreen extends Point {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        //Panel for the Name with Text Field
         JPanel namePanel = new JPanel();
         namePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
+        //to show the nameLabel Label and nameField TextField
         namePanel.add(nameLabel);
         namePanel.add(nameField);
 
+        //Another panel for Birthday (Month, Day, and Year)
         JPanel bdayPanel = new JPanel();
         bdayPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JLabel bdayLabel = new JLabel("Birthday:");
@@ -165,67 +168,87 @@ public class RecordListScreen extends Point {
         monthComboBox.setBackground(Color.WHITE);
         dayComboBox.setBackground(Color.WHITE);
         yearComboBox.setBackground(Color.WHITE);
+        //to show the bdayLabel, monthComboBox, dayComboBox, yearComboBox in the bdayPanel Panel
         bdayPanel.add(bdayLabel);
         bdayPanel.add(monthComboBox);
         bdayPanel.add(dayComboBox);
         bdayPanel.add(yearComboBox);
 
+        //Shows the Whole panel for addRecord() method
         panel.add(namePanel);
         panel.add(bdayPanel);
 
+        //if this becomes false, the button addRecord() method will not work/function.
         boolean addAnother = true;
+        //
         while (addAnother) {
+            //
             int result = JOptionPane.showOptionDialog(null, panel, "Add a Record", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
                     new String[]{"Save and Go Back", "Save and Add Another", "Back"}, "Save and Go Back");
-            if (result == JOptionPane.CLOSED_OPTION) {
+
+            if (result == JOptionPane.CLOSED_OPTION) { //stops the addRecord() method when you close the Panel.
+                //If user clicks the exit button (on the Panel), the Panel will stop and exit, going back to the List of Records Panel.
                 addAnother = false;
             }
-                else if (result == 2) {
-                    break;
+                else if (result == 2) { //2 is the Back button
+                    break; //the break statement will stop the addRecord() method and will go back to the List of Records Panel.
                 }
                 else {
+                    //Gets the user input (Name)
                     String name = nameField.getText();
 
+                    //If name is not empty, the chosen month, day, & year will convert into a String and show up to the Table in the List of Records.
                     if (!name.isEmpty()) {
                         int selectedMonth = monthComboBox.getSelectedIndex() + 1;
                         int selectedDay = Integer.parseInt((String) dayComboBox.getSelectedItem());
                         int selectedYear = Integer.parseInt((String) yearComboBox.getSelectedItem());
 
                         try {
+                            //
                             LocalDate currentDate = LocalDate.now();
                             LocalDate birthdate = LocalDate.of(selectedYear, selectedMonth, selectedDay);
 
+                            //If chosen date is in the future, this Illegal Argument Exception will show.
                             if (birthdate.isAfter(currentDate)) {
                                 throw new IllegalArgumentException("Birthdate non-existent.");
                             }
+                            //calculates the age
                             int age = currentDate.getYear() - birthdate.getYear();
+                            //Person is the Person Class
+                            //If adding a record, object person will store a value in the Person Class, which is the inputted Name and Birthday, and the calculated Age.
                             Person person = new Person(name, birthdate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")), age);
+
+                            //The records array list will store the added person objects made by the user.
                             records.add(person);
                             updateTable();
 
-                            if (result == 0) {
-                                addAnother = false; // Save and Go Back
-                                } else {
-                                // Clear input fields for adding another record
-                                nameField.setText("");
-                                monthComboBox.setSelectedIndex(0);
-                                dayComboBox.setSelectedIndex(0);
-                                yearComboBox.setSelectedIndex(0);
+                            if (result == 0) { //0 is Save and Go Back button
+                                addAnother = false; //When user clicks the Save and Go Back button (on the Panel), it will stop and go back to the List of Records.
+                                }
+                            else { // This is for the Save and Add Another button.
+                                //Clear input fields for adding another record.
+                                nameField.setText(""); //Empty Text Field
+                                monthComboBox.setSelectedIndex(0); //January
+                                dayComboBox.setSelectedIndex(0); //1
+                                yearComboBox.setSelectedIndex(0); //2023
                             }
                         }
                         catch (IllegalArgumentException ex) {
+                            //Title of the Panel when the Illegal Argument Exception "Birthdate non-existent." is shown.
                             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
                         }
                         catch (Exception error) {
+                            //Title ("Error: Invalid Input") and Text ("Invalid birthdate format.") of the Panel when the Exception error is shown.
                             JOptionPane.showMessageDialog(null, "Invalid birthdate format.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                     else {
+                        //Title ("Error: Invalid Input") and Text ("Name input is missing.") of the Panel when the Exception error is shown.
                         JOptionPane.showMessageDialog(null, "Name input is missing.", "Error: Invalid Input", JOptionPane.ERROR_MESSAGE);
                     }
                 }
         }
-        frame.setVisible(true);
+        frame.setVisible(true); //shows the List of Records Frame
     }
 
     private void removeRecordList() {
@@ -356,16 +379,19 @@ public class RecordListScreen extends Point {
 
 
     private void sortRecords(String sortBy, boolean isAscending) {
+        //uses the java util comparator package
         Comparator<Person> comparator = switch (sortBy) {
+            //compares each person object by getting their Name, Birthday (Month), & Age in an ascending order
             case "Birthday" -> Comparator.comparing(Person::getBirthday);
             case "Age" -> Comparator.comparingInt(Person::getAge);
             default -> Comparator.comparing(Person::getName);
         };
 
+        //if not ascending (descending), then it will reverse
         if (!isAscending) {
             comparator = comparator.reversed();
         }
-
+        //
         records.sort(comparator);
         updateTable();
     }
