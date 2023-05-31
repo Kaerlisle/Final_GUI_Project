@@ -145,6 +145,7 @@ public class RecordListScreen extends Point {
     }
 
     private void addRecord() {
+        frame.setVisible(false);
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
@@ -224,6 +225,7 @@ public class RecordListScreen extends Point {
                     }
                 }
         }
+        frame.setVisible(true);
     }
 
     private void removeRecordList() {
