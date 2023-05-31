@@ -45,7 +45,7 @@ public class RecordListScreen extends Point {
         header.setForeground(Color.BLACK);
 
         recordsTable.setFont(recordsTable.getFont().deriveFont(Font.PLAIN));
-        recordsTable.setBackground(Color.darkGray);
+        recordsTable.setBackground(Color.white);
         recordsTable.setForeground(Color.black);
         recordsPanel.add(new JScrollPane(recordsTable), BorderLayout.CENTER);
 

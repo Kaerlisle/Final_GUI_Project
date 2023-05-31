@@ -74,7 +74,8 @@ public class LoginScreen extends JFrame {
 
         JButton loginButton = new JButton("Login");
         loginButton.setBounds(185, 110, 100, 25);
-        loginButton.setBackground(Color.WHITE);
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setBackground(Color.decode("#028A0F"));
         add(loginButton);
 
         loginButton.addActionListener(e -> validateCredentials());
