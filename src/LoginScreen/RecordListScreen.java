@@ -248,13 +248,17 @@ public class RecordListScreen extends Point {
                 if (!name.isEmpty()) {
                     int confirm = JOptionPane.showConfirmDialog(removePanel, "Remove this record?", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        boolean removed = removeRecord(name);
-                        if (removed) {
-                            JOptionPane.showMessageDialog(removePanel, "The record is removed.");
-                            updateTable();
-                            removeRecord.setVisible(false);
-                        } else {
-                            JOptionPane.showMessageDialog(removePanel, "No such record is found.");
+                        try {
+                            boolean removed = removeRecord(name);
+                            if (removed) {
+                                JOptionPane.showMessageDialog(removePanel, "The record is removed.");
+                                updateTable();
+                                removeRecord.setVisible(false);
+                            } else {
+                                throw new RuntimeException("No such record is found.");
+                            }
+                        } catch (RuntimeException ex) {
+                            JOptionPane.showMessageDialog(removePanel, ex.getMessage());
                         }
                     }
                 } else {
@@ -262,20 +266,23 @@ public class RecordListScreen extends Point {
                 }
             }
         });
-
         removeAnotherButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String name = nameField.getText().trim();
                 if (!name.isEmpty()) {
                     int confirm = JOptionPane.showConfirmDialog(removePanel, "Remove this record?", "Confirm", JOptionPane.YES_NO_OPTION);
                     if (confirm == JOptionPane.YES_OPTION) {
-                        boolean removed = removeRecord(name);
-                        if (removed) {
-                            JOptionPane.showMessageDialog(removePanel, "The record is removed.");
-                            updateTable();
-                            nameField.setText(""); // Clear the name field for removing another record
-                        } else {
-                            JOptionPane.showMessageDialog(removePanel, "No such record is found.");
+                        try {
+                            boolean removed = removeRecord(name);
+                            if (removed) {
+                                JOptionPane.showMessageDialog(removePanel, "The record is removed.");
+                                updateTable();
+                                nameField.setText(""); // Clear the name field for removing another record
+                            } else {
+                                throw new RuntimeException("No such record is found.");
+                            }
+                        } catch (RuntimeException ex) {
+                            JOptionPane.showMessageDialog(removePanel, ex.getMessage());
                         }
                     }
                 } else {
