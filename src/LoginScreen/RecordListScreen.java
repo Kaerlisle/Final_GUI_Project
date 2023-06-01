@@ -145,6 +145,7 @@ public class RecordListScreen extends Point {
     }
 
     private void addRecord() {
+        //The List of Records Frame will be hidden if the addRecord() method is in function
         frame.setVisible(false);
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -154,7 +155,7 @@ public class RecordListScreen extends Point {
         namePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField(20);
-        //to show the nameLabel Label and nameField TextField
+        //to show the nameLabel Label and nameField Text Field
         namePanel.add(nameLabel);
         namePanel.add(nameField);
 
